@@ -1,0 +1,16 @@
+create a form 
+when the clear name button is clicked all the names will be cleared from the textarea. 
+we are not worried about names with multiple capital letters like "McDonald" or apostrophes like "O'brian."
+<textarea style="height: 500px;" class>
+shapre, scott : how do we change it? 
+    split the strings? 
+
+<?php
+$ip = "123.123.123.1234"; // some IP address
+$iparr = split ("\.",$ip);
+
+//example 1
+$pizza = "piece1 piece2 piece3";
+$pieces = explode(" ", $pizza);
+echo $pieces[0]; // piece1
+echo $pieces[1]; // piece2
