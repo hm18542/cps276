@@ -1,4 +1,5 @@
 
+
 CREATE TABLE customers
 (
   cust_id      int       NOT NULL AUTO_INCREMENT,
