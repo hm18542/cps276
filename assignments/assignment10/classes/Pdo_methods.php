@@ -1,24 +1,24 @@
 <?php
-
-//the class extends the database connection class and build on it with pdo methods commands
-//extends databasconnection class 
+/* THIS CLASS EXTENDS THE DATABASE CONNECTION CLASS AND BUILD ON IT WITH PDO COMMANDS */
+/* THE DATABASE CONNECTION CLASS IS STORED OUTSIDE OF THE EXAMPLE FILES SO YOU CANNOT SEE THE CONNECTION INFORMATION. ALSO IT IS MORE SECURE*/
 require_once "Db_conn.php";
 class PdoMethods extends DatabaseConn {
 
+	
 	private $sth;
 	private $conn;
 	private $db;
 	private $error;
 
-	//make it binding. the script takes the sql statements the binding array as the parameters and performs the query. 
-    //run the query and return the result as an array or an error string 
 
-    public function selectBinded($sql, $bindings){
+	/* THIS METHOD IS FOR ALL SELECT STATEMENTS THAT NEED TO HAVE A BINDING TO PROETECT THE DATA.  THE SCRIPT TAKES THE SQL STATEMENTS AN THE BINDING ARRAY AS ITS PARAMETERS AND PERFORMS THE QUERY.  IT WILL RUN THE QUERY AND RETURN THE RESULT AS AN ASSOCIATIVE ARRAY OR AN ERROR STRING.*/
+	public function selectBinded($sql, $bindings){
 		$this->error = false;
 
-        //try and catch statments to catch errors and returns an error message.
-		//only for the fatal error to display, then comment out the try catch statement 
-        try{
+		//I CREATE A TRY CATCH BLOCK TO CATCH ANY ERRORS THAT MIGHT ARRISE AND RETURNS AN ERROR MESSAGE.
+
+		/*IMPORTANT!!! IF YOU WANT THE FATAL ERROR TO DISPLAY ON THE WEBPAGE AND NOT THE ERROR MESSAGE THEN COMMENT OUT THE TRY CATCH PART AND JUST RUN THE STATEMENTS WITHIN THE TRY*/
+		try{
 			$this->db_connection();
 			$this->sth = $this->conn->prepare($sql);
 			$this->createBinding($bindings);
@@ -26,42 +26,53 @@ class PdoMethods extends DatabaseConn {
 		}
 		catch(PDOException $e){
 			
-			//output the error message: 
-            echo $e->getMessage();
+			//THIS WILL OUTPUT THE ERROR MESSAGE TO THE BROWSER REMOVE IF IN PRODUCTION
+			echo $e->getMessage();
 			return 'error';
 			
 		}
-		//cloases the databaseconn
+		
+		//THIS CLOSES THE DATABASE CONNECTION
 		$this->conn = null;
-		//returns a record set
+		
+		//THIS RETURNS A RECORD SET
 		return $this->sth->fetchAll(PDO::FETCH_ASSOC);
 			
 	}
-    //this time for no need of any binded parameters and none are passed
+
+	/* THIS FUNCTION DOES THE SAME AS THE ABOVE BUT DOES NOT NEED ANY BINDED PARAMETERS ARE NO PARAMTERS ARE PASSED */
 	public function selectNotBinded($sql){
 			$this->error = false;
-			//try catch statement for carch errors and returns an error message.
+			
+			//I CREATE A TRY CATCH BLOCK TO CATCH ANY ERRORS THAT MIGHT ARRISE AND RETURNS AN ERROR MESSAGE.
+
+			/*IMPORTANT!!! IF YOU WANT THE FATAL ERROR TO DISPLAY ON THE WEBPAGE AND NOT THE ERROR MESSAGE THEN COMMENT OUT THE TRY CATCH PART AND JUST RUN THE STATEMENTS WITHIN THE TRY*/
+			try{
 				$this->db_connection();
 				$this->sth = $this->conn->prepare($sql);
 				$this->sth->execute();
 			}
 			catch (PDOException $e){
-				//output the error message
+				//THIS WILL OUTPUT THE ERROR MESSAGE TO THE BROWSER REMOVE IF IN PRODUCTION
 				echo $e->getMessage();
 				return 'error';
 			}
-			//closes databseconn
+			
+			//THIS CLOSES THE DATABASE CONNECTION
 			$this->conn = null;
-			//returns the record set
+			
+			//THIS RETURNS THE RECORD SET AS AN ARRAY
 			return $this->sth->fetchAll(PDO::FETCH_ASSOC);
 
 		}
-    //all the rest:create,update,delete
+
+	/* BECAUSE ONLY SELECT QUERIES RETURN A VALUE THE DOES ALL THE REST CREATE, UPDATE, DELETE */
 	public function otherBinded($sql, $bindings){
 		$this->error = false;
 		
-		//A TRY CATCH BLOCK
+		//I CREATE A TRY CATCH BLOCK TO CATCH ANY ERRORS THAT MIGHT ARRISE AND RETURNS AN ERROR MESSAGE.
 		
+		/*IMPORTANT!!! IF YOU WANT THE FATAL ERROR TO DISPLAY ON THE WEBPAGE AND NOT THE ERROR MESSAGE THEN COMMENT OUT THE TRY CATCH PART AND JUST RUN THE STATEMENTS WITHIN THE TRY*/
 		try{
 			$this->db_connection();
 			$this->sth = $this->conn->prepare($sql);
@@ -69,49 +80,50 @@ class PdoMethods extends DatabaseConn {
 			$this->sth->execute();
 		}
 		catch(PDOException $e) {
-			//output the error message
+			//THIS WILL OUTPUT THE ERROR MESSAGE TO THE BROWSER REMOVE IF IN PRODUCTION
 			echo $e->getMessage();
 			return 'error';
 		}
 
-		//close the dbconn
+		//THIS CLOSES THE DATABASE CONNECTION
 		$this->conn = null;
 
-		//no error = everything worked 
+		//NO ERROR MEANS EVERYTHING WORKED
 		return 'noerror';
 	}
 
 	public function otherNotBinded($sql){
 		$this->error = false;
 			
-			//try catch block
+			//I CREATE A TRY CATCH BLOCK TO CATCH ANY ERRORS THAT MIGHT ARRISE AND RETURNS AN ERROR MESSAGE.
 
+			/*IMPORTANT!!! IF YOU WANT THE FATAL ERROR TO DISPLAY ON THE WEBPAGE AND NOT THE ERROR MESSAGE THEN COMMENT OUT THE TRY CATCH PART AND JUST RUN THE STATEMENTS WITHIN THE TRY*/
 			try{
 				$this->db_connection();
 				$this->sth = $this->conn->prepare($sql);
 				$this->sth->execute();
 			}
 			catch (PDOException $e){
-				//output the error message
+				//THIS WILL OUTPUT THE ERROR MESSAGE TO THE BROWSER REMOVE IF IN PRODUCTION
 				echo $e->getMessage();
 				return 'error';
 			}
 			
-			//close the db conn
+			//THIS CLOSES THE DATABASE CONNECTION
 			$this->conn = null;
 			
-			//return noerror
+			//THIS RETURNS NOERROR IF NO ERRORS
 			return 'noerror';
 
 	}
 
-	//a connection to the db
+	/* CREATES A CONNECTION TO THE DATABASE */
 	private function db_connection(){
 		$this->db = new DatabaseConn();
 		$this->conn = $this->db->dbOpen();
 	}
 
-	//create binding
+	/* CREATES THE BINDINGS */
 	private function createBinding($bindings){
 		foreach($bindings as $value){
 			switch($value[2]){

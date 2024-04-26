@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <?php if (isset($_SESSION['message'])) echo "<p>" . $_SESSION['message'] . "</p>"; ?>
     <form action="index.php?page=login" method="post">
         <label for="email" class="form-label">Email</label><br>
-        <input type="email" name="email" id="email" class="form-control" value="<?php echo isset($email) ? $email : 'rwhewison@admin.com'; ?>" required><br>
+        <input type="email" name="email" id="email" class="form-control" value="<?php echo isset($email) ? $email : 'hmoon3@admin.com'; ?>" required><br>
         <label for="password" class="form-label">Password</label><br>
         <input type="password" name="password" class="form-control" id="password" value="<?php echo isset($password) ? $password : 'password'; ?>" required><br>
         <input type="submit" value="Login" class="btn btn-primary">
